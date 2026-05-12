@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Budget Form - ShilpoShop{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <h2>Budget Record</h2>
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="field-row">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <p class="text-muted" style="margin-bottom:10px;">
+            Profit is calculated automatically: Income - Expense
+        </p>
+
+        <div class="flex gap-1">
+            <button type="submit" class="btn btn-green">Save</button>
+            <a href="{% url 'budget_list' %}" class="btn btn-gray">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

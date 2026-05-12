@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Make Payment - ShilpoShop{% endblock %}
+
+{% block content %}
+
+<div class="form-container" style="max-width:520px;">
+    <h2>Make Payment</h2>
+
+    <!-- Order Summary -->
+    <div class="white-box mb-2" style="margin:0 0 20px 0;">
+        <div class="white-box-header">Order Summary</div>
+        <div class="white-box-body" style="font-size:14px; line-height:2; color:#444;">
+            <p><strong>Order #:</strong> {{ order.id }}</p>
+            <p><strong>Product:</strong> {{ order.product.product_name }}</p>
+            <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+            <p style="font-size:18px; font-weight:bold; color:#c62828;">
+                Total: &#2547; {{ order.total_price }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Payment Form -->
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="field-row">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-green btn-block" style="margin-top:12px;">
+            Confirm Payment — &#2547; {{ order.total_price }}
+        </button>
+    </form>
+
+    <p class="text-center text-muted mt-1">
+        Payments are simulated. No real money is charged.
+    </p>
+</div>
+
+{% endblock %}

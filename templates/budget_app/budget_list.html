@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Budget - ShilpoShop{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <h1>Budget Records</h1>
+        <p>Admin-only financial overview</p>
+    </div>
+    <a href="{% url 'budget_add' %}" class="btn btn-green">+ Add Record</a>
+</div>
+
+{% if budgets %}
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Income (&#2547;)</th>
+                <th>Expense (&#2547;)</th>
+                <th>Profit (&#2547;)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for budget in budgets %}
+            <tr>
+                <td><strong>{{ budget.month }}</strong></td>
+                <td style="color:#2e7d32; font-weight:bold;">&#2547; {{ budget.income }}</td>
+                <td style="color:#c62828; font-weight:bold;">&#2547; {{ budget.expense }}</td>
+                <td style="font-weight:bold; color:{% if budget.profit >= 0 %}#2e7d32{% else %}#c62828{% endif %};">
+                    &#2547; {{ budget.profit }}
+                </td>
+                <td>
+                    <a href="{% url 'budget_edit' budget.id %}" class="btn btn-gray btn-sm">Edit</a>
+                    <a href="{% url 'budget_delete' budget.id %}" class="btn btn-red btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">&#128200;</div>
+    <p>No budget records yet.</p>
+    <a href="{% url 'budget_add' %}" class="btn btn-green mt-2">Add First Record</a>
+</div>
+{% endif %}
+
+{% endblock %}

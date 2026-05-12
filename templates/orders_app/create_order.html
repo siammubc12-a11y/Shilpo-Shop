@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Place Order - {{ product.product_name }}{% endblock %}
+
+{% block content %}
+
+<p style="margin-bottom:16px;">
+    <a href="{% url 'product_detail' product.id %}">&larr; Back to Product</a>
+</p>
+
+<div class="two-col">
+
+    <!-- Product Summary -->
+    <div class="white-box">
+        <div class="white-box-header">Product Summary</div>
+        <div class="white-box-body">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.product_name }}"
+                     style="width:100%; max-height:200px; object-fit:cover; border-radius:4px; margin-bottom:12px;">
+            {% endif %}
+            <h3 style="margin-bottom:6px;">{{ product.product_name }}</h3>
+            <p style="font-size:14px; color:#555; margin-bottom:8px;">{{ product.description|truncatewords:20 }}</p>
+            <p style="font-size:20px; font-weight:bold; color:#c62828;">&#2547; {{ product.price }}</p>
+            <p class="in-stock" style="margin-top:4px;">&#10003; {{ product.stock }} in stock</p>
+        </div>
+    </div>
+
+    <!-- Order Form -->
+    <div class="form-container" style="margin:0;">
+        <h2>Confirm Order</h2>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="field-row">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+            <p style="font-size:13px; color:#777; margin-bottom:12px;">
+                Total = Price x Quantity (calculated automatically)
+            </p>
+            <button type="submit" class="btn btn-green btn-block">Place Order</button>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}
